@@ -1,6 +1,7 @@
 import hassapi as hass
 import datetime
 from time import sleep
+import pytz
 
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
@@ -19,6 +20,7 @@ class VodafoneStationRestarter(hass.Hass):
     router_ip = "192.168.0.1"
     restart_time = "05:00:00"
     chrome_options = None
+    tz = "Europe/Berlin"
 
     def initialize(self):
 
@@ -30,11 +32,11 @@ class VodafoneStationRestarter(hass.Hass):
         if self.password is None:
             self.log("Password not set in app.yaml", log='error_log')
             self.terminate()
-            return
         self.router_ip = self.args.get("router_ip", self.restart_time)
         self.restart_time = self.args.get("restart_time", self.restart_time).split(":")
         if len(self.restart_time) == 2:
             self.restart_time.append("00")
+        self.tz = self.config.get("time_zone", self.tz)
 
         self.chrome_options = Options()
         self.chrome_options.add_argument("--no-sandbox")
@@ -45,7 +47,7 @@ class VodafoneStationRestarter(hass.Hass):
         self.chrome_options.add_argument("--window-size=1920,1080")
         self.chrome_options.add_argument("--ignore-certificate-errors")
 
-        time = datetime.time(int(self.restart_time[0]), int(self.restart_time[1]), int(self.restart_time[2]))
+        time = datetime.time(int(self.restart_time[0]), int(self.restart_time[1]), int(self.restart_time[2]), pytz.timezone(self.tz))
 
         self.log("Scheduling restart of Vodafone Station at " + str(time), log='main_log')
         self.run_daily(self.run_daily_callback, time)
