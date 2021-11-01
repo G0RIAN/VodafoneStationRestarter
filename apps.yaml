@@ -2,7 +2,7 @@ vodafone_station_restarter:
     module: vodafone_station_restarter          # name of *.py file, required
     class: VodafoneStationRestarter             # class name in *.py file, required
     password: !secret router_password           # password to the Vodafone Station (may use HA secrets), required
-    restart_time: 05:00:00                      # timestamp when to restart the vodafone station (HH:MM:SS), optional
+    restart_time: 05:00:00                      # timestamp when to restart the vodafone station (HH:MM or HH:MM:SS), optional
     router_ip: 192.168.0.1                      # IPv4 address of the Vodafone Station, optional
                                                 # IPv6 or mDNS should work too, but is untested
                                                 # e. g. "["1234:abcd::1]" or "kabelbox.local"
