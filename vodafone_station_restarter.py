@@ -30,7 +30,7 @@ class VodafoneStationRestarter(hass.Hass):
 
         self.password = self.args.get("password")
         if self.password is None:
-            self.log("Password not set in app.yaml", log='error_log')
+            self.log("Password not set in apps.yaml", log='error_log')
             self.terminate()
         self.router_ip = self.args.get("router_ip", self.restart_time)
         self.restart_time = self.args.get("restart_time", self.restart_time).split(":")
@@ -47,7 +47,10 @@ class VodafoneStationRestarter(hass.Hass):
         self.chrome_options.add_argument("--window-size=1920,1080")
         self.chrome_options.add_argument("--ignore-certificate-errors")
 
-        time = datetime.time(int(self.restart_time[0]), int(self.restart_time[1]), int(self.restart_time[2]), pytz.timezone(self.tz))
+        time = datetime.time(
+            int(self.restart_time[0]), int(self.restart_time[1]), int(self.restart_time[2]),
+            tzinfo=pytz.timezone(self.tz)
+        )
 
         self.log("Scheduling restart of Vodafone Station at " + str(time), log='main_log')
         self.run_daily(self.run_daily_callback, time)
