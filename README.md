@@ -16,7 +16,7 @@ system_packages:
 python_packages:
   - selenium
 ```
-3. Check the `secrets` and `time_zone` keys in the `/config/appdaemon/appdaemon.yaml` file
+3. Check the `secrets` key in the `/config/appdaemon/appdaemon.yaml` file
 4. Copy `vodafone_station_restarter.py` to `/config/appdaemon/apps/`
 ````bash
 git clone git@github.com:G0RIAN/VodafoneStationRestarter.git
